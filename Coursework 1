@@ -1,0 +1,131 @@
+getwd()
+archdata = read.csv("/Users/fahad/Desktop/Msc Data Science/Statistics for Data Scientists/Coursework1/Assignment 1-20181028/DartPoints.csv")
+attach(archdata)
+#Question 2(a)
+
+#Nominal  
+Name
+Blade.Sh
+Base.Sh
+Should.Sh
+Should.Or
+Haft.Sh
+Haft.Or
+#Numerical Continous
+Length
+Width
+Thickness
+B.Width
+J.Width
+H.Length
+Weight
+
+#Question 2(b)
+length.width.plot =plot(Length, Width, main="Relationship between the Length and Width of Archaic Dart Points", ylab="Length of Dart (cm)", xlab = "Width of Dart (cm)")
+#Appears to be a strong relationshop between width and length of archaic darts
+length.width.corr = cor.test(Length,Width)
+#t = 11.349, df = 89, p-value < 2.2e-16  corr = 0.7689932 
+
+
+length.thickness.plot = plot(Length, Thickness, main="Relationship between the Length and Thickness of Archaic Dart Points", ylab="Length of Dart (cm)", xlab = "Thickness of Dart (cm)")
+#Appears to be a very strong relationshop positive between thickness and length of dart with correlation weakening as darts become thicker?
+length.thickness.corr = cor.test(Length,Thickness)
+#t = 6.8776, df = 89, p-value = 8.125e-10 corr = 0.5890989
+
+
+length.B.Width.plot = plot(Length, B.Width, main="Relationship between the Length and Base Width of Archaic Dart Points", ylab="Length of Dart (cm)", xlab = "Base Width of Dart (cm)")
+#Base width appears to exhibit a negatve relationship with the length of archaic dats 
+length.B.Width.corr = cor.test(Length, B.Width)
+#t = -2.424, df = 67, p-value = 0.01806 corr = -0.283949 
+
+length.J.Width.plot = plot(Length, J.Width, main="Relationship between the Length and Junction Width of Archaic Dart Points", ylab="Length of Dart (cm)", xlab = "Junction Width of Dart (cm)")   
+#This ones unclear to me need to do a correlation co-efficient to figure it out 
+length.J.Width.corr = cor.test(Length, J.Width)
+#t = 4.7807, df = 88, p-value = 6.956e-06 corr = 0.4540618 
+
+
+length.H.length.plot = plot(Length,H.Length, main="Relationship between the Length and Haft Element Length  of Archaic Dart Points", ylab="Length of Dart (cm)", xlab = "Haft Element Length of Dart (cm)") 
+# This looks like a positive correlation
+length.H.length.corr = cor.test(Length, H.Length)
+#t = 5.5813, df = 89, p-value = 2.549e-07 corr = 0.5091807
+
+
+
+
+length.Weight.plot = plot(Length,Weight, main="Relationship between the Length and Weight  of Archaic Dart Points", ylab="Length of Dart (cm)", xlab = " Weight of Dart(cm)")
+# Very strong positive correlation
+length.Weight.corr = cor.test(Length, Weight)
+#t = 17.475, df = 89, p-value < 2.2e-16 corr = 0.879953 
+
+
+
+name.length.plot = boxplot(Length~Name, main="Relationship between Dart Type and Dart Length (cm) ", ylab="Length of Dart (cm)", xlab="Dart  Type")
+
+Blade.Sh.length.plot = boxplot(Length~Blade.Sh, main="Relationship between Length and Blade Shape (cm) ", ylab="Length of Dart (cm)", xlab="Blade Shape", names =c("Excurvate", "Invcurvate", "Recurvate", "Straight"))
+  
+Base.Sh.length.plot = boxplot(Length~Base.Sh, main="Relationship between Length and Base Shape (cm) ", ylab="Length of Dart (cm)", xlab="Base Shape", names =c("Excurvate", "Invcurvate", "Recurvate", "Straight"))
+
+Should.Sh.length.plot =  boxplot(Length~Should.Sh, main="Relationship between Length and Shoulder Shape ", ylab="Length of Dart (cm)", xlab="Shoulder Shape", names =c("Excurvate", "Invcurvate", "Recurvate", "Straight"))
+
+Should.Or.length.plot = boxplot(Length~Should.Or, main="Relationship between Length and Shoulder Orientation ", ylab="Length of Dart (cm)", xlab="Shoulder Orientation", names =c("Excurvate", "Invcurvate", "Recurvate", "None"))
+
+Haft.Sh.length.plot = boxplot(Length~Haft.Sh, main="Relationship between Length and Shape of Lateral Haft Element ", ylab="Length of Dart (cm)", xlab="Shape of Lateral Haft Element", names=c("Angular","Excuravate","Incurvate","Recurvate","Straight"))
+
+Haft.Or.length.plot = boxplot(Length~Haft.Or, main="Relationship between Length and Orientation of Lateral Haft Element ", ylab="Length of Dart (cm)", xlab="Orientation of Lateral Haft Element", names=c("Concave","Expanding","Parallel","Contracting","Convex"))
+
+
+
+W.weight = Weight
+
+Weight.Shape.Data = data.frame(W.weight,Blade.Sh)
+
+detach(archdata)
+
+library(plyr)
+library(dplyr)
+attach(archdata)
+
+catweight = cut(archdata$Weight, breaks=c(2,4,6,8,10,12,14,16,18,30))
+
+par(mfrow=c(1,1))
+
+
+#Weight.Shape.Data = data.frame(W.weight,Blade.Sh)
+#y = count(Weight.Shape.Data, 'Blade.Sh')
+#table(Weight.Shape.Data$W.weight,Weight.Shape.Data$Blade.Sh)
+t1 = table(catweight,archdata$Blade.Sh)
+t1.bp.E = barplot(t1[,1]/sum(t1[,1]))
+t1.bp.I =barplot(t1[,2]/sum(t1[,2]))
+t1.bp.R =barplot(t1[,3]/sum(t1[,3]))
+t1.bp.S =barplot(t1[,4]/sum(t1[,4]))
+
+
+E= subset(df.t1, Var2=='E')
+sum.E = sum(E[,3])
+relative.freq.E = t1[,1]/sum.E
+
+I = subset(df.t1, Var2=='I')
+sum.I = sum(I[,3])
+relative.freq.I = t1[,2]/sum.I
+
+
+R = subset(df.t1, Var2=='R')
+sum.R = sum(I[,3])
+relative.freq.R = t1[,3]/sum.R
+
+
+S = subset(df.t1, Var2=='S')
+sum.S = sum(S[,3])
+relative.freq.S = t1[,4]/sum.S
+weight.name = c("2-4","4-6","6-8","10-12","12-14","14-16","16-18","18-30")
+
+cond.relative.table = cbind(E=relative.freq.E, I = relative.freq.I, R=relative.freq.R, S= relative.freq.S)
+cond.relative.table = data.frame(cond.relative.table)
+
+
+#df.t1 = data.frame(t1)
+
+
+
+
+  
